@@ -63,6 +63,10 @@ Deja de usar las flechas del teclado. Tus manos deben descansar en la fila centr
 * `:q` : Cierra el archivo actual (*Quit*).
 * `:wq` : Guarda los cambios y cierra el archivo de un solo golpe.
 * `:q!` : Fuerza el cierre del editor **sin guardar** los cambios realizados.
+* `v .` | Abre Neovim mostrando el explorador de archivos en la carpeta actual. |
+* `Ctrl + n` | Abre o cierra el explorador de archivos lateral (Netrw). |
+* `Ctrl + w` + `l` | Mueve el cursor del explorador al archivo de la derecha. |
+* `Ctrl + w` + `h` | Regresa el cursor del archivo al explorador de la izquierda. |
 
 ---
 
@@ -108,6 +112,9 @@ Tu prompt en la terminal ahora es inteligente. Te avisa en qué rama estás para
 * `gs` : Abre el estado rápido de Git (`git status`).
 * `gc "mensaje"` : Hace un commit rápido sin escribir todo el comando (`git commit -m`).
 * `gp` : Sube los cambios rápidamente a la nube (`git push`).
+
+### Nota de actualizacion
+ahora usamos la arquitectura nativa vim.lsp.enable('pyright') compatible con las versiones más modernas de Neovim
 
 ---
 
