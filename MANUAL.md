@@ -27,108 +27,108 @@ La consola es tu centro de operaciones. Aquí tienes los comandos y superpoderes
 * **Copiar Elementos:** `Copy-Item <origen> <destino>` (Ej: `Copy-Item $PROFILE .\configuraciones\`)
 
 ### ⚡ Trucos de Productividad en Consola
-* **El Tabulador (`Tab`):** Escribe el inicio de un comando o ruta y presiona `Tab` para que la consola lo complete mágicamente.
-* **Flecha Derecha ($ightarrow$):** Acepta la predicción gris del historial predictivo que configuramos.
+* **El Tabulador (`Tab`):** Escribe el inicio de un comando o ruta y presiona `Tab` para que la consola lo complete automáticamente.
+* **Flecha Derecha (->):** Acepta la predicción gris del historial predictivo que configuramos.
 * **Buscar en Historial (`Ctrl + R`):** Presiona este atajo y empieza a escribir un comando viejo; la consola lo buscará al instante.
 
 ---
 
 ## 📝 2. El Editor: Neovim (Atajos de Teclado)
 
-Neovim no usa el mouse de forma nativa; todo se controla mediante **Modos** y combinaciones de teclas. Recuerda tu alias maestro: escribir **`v <archivo>`** abre Neovim al instante.
+Neovim no usa el mouse de forma nativa; todo se controla mediante **Modos** y combinaciones de teclas. Recuerda tu alias maestro: escribir **`v <archivo>`** o **`v .`** abre Neovim al instante.
 
 ### 🔄 Los Modos de Neovim
-1.  **Modo Normal (Por Defecto):** Sirve para moverte, borrar, copiar y ejecutar comandos. Entras aquí presionando la tecla `Esc`.
-2.  **Modo Inserto (Escribir):** Sirve para redactar código. Entras desde el Modo Normal presionando la tecla `i`. Verás `-- INSERT --` abajo.
-3.  **Modo Comando (Acciones del Editor):** Sirve para guardar, salir y configurar. Entras desde el Modo Normal escribiendo `:` (dos puntos).
+1. **Modo Normal (Por Defecto):** Sirve para moverte, borrar, copiar y ejecutar comandos. Entras aquí presionando la tecla `Esc`.
+2. **Modo Inserto (Escribir):** Sirve para redactar código. Entras desde el Modo Normal presionando la tecla `i`. Verás `-- INSERT --` abajo.
+3. **Modo Comando (Acciones del Editor):** Sirve para guardar, salir y configurar. Entras desde el Modo Normal escribiendo `:` (dos puntos).
 
-### 🚀 Movimiento Avanzado (Modo Normal)
-Deja de usar las flechas del teclado. Tus manos deben descansar en la fila central:
-* `h` : Mueve el cursor a la **izquierda**.
-* `j` : Mueve el cursor hacia **abajo**.
-* `k` : Mueve el cursor hacia **arriba**.
-* `l` : Mueve el cursor a la **derecha**.
-* `w` : Salta a la siguiente **palabra** (*Word*).
-* `b` : Regresa a la **palabra anterior** (*Back*).
-* `0` : Salta al **inicio absoluto** de la línea.
-* `$` : Salta al **final absoluto** de la línea.
-
-### ✂️ Edición Rápida (Modo Normal)
+### 🚀 Movimiento y Edición Rápida (Modo Normal)
+* `h`, `j`, `k`, `l` : Movimiento básico (Izquierda, Abajo, Arriba, Derecha).
+* `w` / `b` : Salta a la siguiente palabra / Regresa a la palabra anterior.
+* `0` / `$` : Salta al inicio / final absoluto de la línea actual.
 * `x` : Borra la letra exacta sobre la que está el cursor.
 * `dd` : Borra (corta) la línea completa actual.
-* `o` : Abre una línea en blanco **debajo** de tu posición actual y entra en Modo Inserto.
+* `o` : Abre una línea en blanco debajo y entra en Modo Inserto.
+
+### 📂 Navegación Ninja y Explorador de Archivos (Netrw)
+| Comando | Descripción |
+| :--- | :--- |
+| `v .` | Abre Neovim inicializando el explorador en la carpeta actual. |
+| `Ctrl + n` | Abre o cierra el panel del explorador de archivos lateral. |
+| `Ctrl + w` luego `l` | Salta del explorador izquierdo hacia el editor de código derecho. |
+| `Ctrl + w` luego `h` | Regresa el cursor del editor de código al explorador izquierdo. |
+| `Enter` (en Netrw) | Abre la carpeta seleccionada o carga el archivo en el editor. |
+| `%` (en Netrw) | Crea un nuevo archivo dentro de la carpeta seleccionada. |
+| `d` (en Netrw) | Crea una nueva carpeta en el directorio actual. |
+| `R` / `D` (en Netrw) | Renombra / Elimina el archivo o carpeta seleccionado. |
 
 ### 💾 Comandos de Archivo (Modo Comando `:`)
 * `:w` : Guarda los cambios (*Write*).
 * `:q` : Cierra el archivo actual (*Quit*).
-* `:wq` : Guarda los cambios y cierra el archivo de un solo golpe.
+* `:wq` : Guarda los cambios y cierra el editor de un solo golpe.
 * `:q!` : Fuerza el cierre del editor **sin guardar** los cambios realizados.
-* `v .` | Abre Neovim mostrando el explorador de archivos en la carpeta actual. |
-* `Ctrl + n` | Abre o cierra el explorador de archivos lateral (Netrw). |
-* `Ctrl + w` + `l` | Mueve el cursor del explorador al archivo de la derecha. |
-* `Ctrl + w` + `h` | Regresa el cursor del archivo al explorador de la izquierda. |
 
 ---
 
-## 🧠 3. Neovim Inteligente: LSP y Atajos Profesionales
+## 🧠 3. Neovim Inteligente: LSP y Automatizaciones
 
-Gracias a **Mason** y al Language Server Protocol (LSP), Neovim analiza tu código en tiempo real utilizando el motor de Microsoft para Python (`pyright`).
+Tu entorno cuenta con el instalador de servidores **Mason**, un motor de autocompletado flotante (**nvim-cmp**) y un sistema de auto-cierre de caracteres (**nvim-autopairs**).
 
-### 🛠️ Comandos Internos de Plugins
-* `:Lazy` : Abre la interfaz gráfica de tu gestor de plugins para ver actualizaciones o cargas.
-* `:Mason` : Abre la tienda interna de LSPs. Desde ahí instalas, actualizas o remueves soportes de lenguajes presionando `i`.
+### ⚡ Atajos de Inteligencia Artificial e IDE
+* `K` (Mayúscula) : Muestra una ventana flotante con la documentación oficial de la función que pisas.
+* `gd` : *Go to Definition*. Salta al archivo y línea exacta donde nació la variable o función.
+* **`F5` (Atajo Maestro Pandita):** Guarda el archivo automáticamente, divide la pantalla y ejecuta el script de Python.
+* **`Tab` / `Shift + Tab`** : Navega hacia abajo / arriba en el menú flotante de sugerencias de código.
+* **`Enter`** : Confirma la sugerencia del menú y auto-rellena el código por ti.
 
-### ⚡ Atajos de Inteligencia Artificial (Modo Normal)
-* `K` (Mayúscula) : Muestra una ventana flotante con la **documentación oficial** de la función o módulo que tu cursor esté pisando.
-* `gd` : *Go to Definition*. Salta directamente al archivo y línea exacta donde se definió la variable o función.
-* **`F5` (Atajo Maestro Pandita):** Guarda tu archivo automáticamente, divide la pantalla horizontalmente y **ejecuta tu script de Python** en una consola interna. Escribe `exit` en esa consola para cerrarla.
+> ⚙️ **Nota de Arquitectura:** El entorno está configurado con la sintaxis nativa moderna `vim.lsp.enable('pyright')`, garantizando velocidad máxima y compatibilidad con versiones de Neovim 0.11 o superiores.
 
 ---
 
 ## 🐙 4. Control de Versiones: Git Basado en Consola
 
-Tu prompt en la terminal ahora es inteligente. Te avisa en qué rama estás parado y cambia a **Rojo con un asterisco (`*`)** si hay cambios pendientes, o a **Verde** si todo está guardado.
+Tu prompt en la terminal te avisa en qué rama estás parado y cambia a **Rojo con un asterisco (`*`)** si tienes cambios pendientes, o a **Verde** si todo está guardado.
 
 ### 📐 Flujo de Trabajo Diario en Git
-1.  **Inicializar proyecto:** Solo se hace una vez por carpeta.
-    ```powershell
-    git init
-    ```
-2.  **Preparar archivos (Tomar foto):** Selecciona qué cambios vas a guardar.
-    ```powershell
-    git add .   # El punto agrega TODOS los archivos de la carpeta
-    git add nombre_archivo.py  # Agrega solo ese archivo específico
-    ```
-3.  **Hacer Commit (Confirmar foto):** Guarda los archivos localmente con un mensaje de qué hiciste.
-    ```powershell
-    git commit -m "Explicación breve de los cambios o mejoras"
-    ```
-4.  **Subir a GitHub (Respaldar en la Nube):**
-    ```powershell
-    git push origin main
-    ```
+1. **Inicializar proyecto:** `git init` (Solo una vez por carpeta).
+2. **Preparar archivos:** `git add .` (El punto agrega absolutamente todos los cambios).
+3. **Confirmar cambios:** `git commit -m "Mensaje descriptivo"` (Guarda la foto localmente).
+4. **Subir a GitHub:** `git push origin main` (Respalda en la nube).
 
-### 🧩 Alias Útiles de Git creados en tu perfil
+### 🧩 Alias Útiles de Git (Forzados en tu Perfil)
 * `gs` : Abre el estado rápido de Git (`git status`).
-* `gc "mensaje"` : Hace un commit rápido sin escribir todo el comando (`git commit -m`).
+* `gc "mensaje"` : Hace un commit rápido ahorrando comandos (`git commit -m`).
 * `gp` : Sube los cambios rápidamente a la nube (`git push`).
-
-### Nota de actualizacion
-ahora usamos la arquitectura nativa vim.lsp.enable('pyright') compatible con las versiones más modernas de Neovim
 
 ---
 
 ## 🐍 5. El Lenguaje: Python para Automatización
 
-Python es limpio, no requiere compilación pesada y es ideal para el rendimiento de tu laptop (8 GB RAM).
+### 📝 Estructura y Librerías del Sistema
+* `import os` / `import shutil` : Interacción avanzada con el sistema de archivos de Windows.
+* `input("Texto: ")` : Captura datos del usuario por teclado (siempre entran en formato Texto).
+* `int(variable)` : *Type Casting*. Convierte un texto numérico en un entero real para cálculos matemáticos.
 
-### 📝 Estructura Básica de Scripts Aprendida
-En nuestro primer proyecto (`organizador.py`), dominamos librerías del sistema operativo:
-* `import os` : Permite hablar con Windows (crear carpetas, listar archivos, verificar rutas).
-* `import shutil` : Permite manipular archivos a bajo nivel (mover, copiar, borrar de raíz).
-* `os.path.join()` : Une carpetas de forma segura sin importar si Windows usa barras `\` o Linux usa `/`.
-* `os.path.splitext()` : Separa mágicamente el nombre de un archivo de su extensión (Ej: `foto.png` -> `foto` y `.png`).
+### 🔄 Control de Flujos y Bucles
+* **Bucle `for in range(inicio, fin)`** : Bucle controlado que itera un número determinado de veces.
+* **Bucle `while <condicion>:`** : Repite un bloque de código mientras la condición booleana sea verdadera.
+* **`break`** : Rompe y aborta de forma inmediata la ejecución de cualquier bucle.
 
----
-
-*Manual creado con dedicación para @PanditaDeveloper. Puedes editar este archivo desde Neovim con `v MANUAL.md` y agregar nuevas secciones a medida que vayamos desbloqueando tecnologías (como Go o SQL).*
+### ⚠️ Gestión Profesional de Errores
+Estructura robusta de 4 bloques para evitar que el software explote ante fallos imprevistos:
+```python
+try:
+    # Código bajo monitoreo que puede lanzar excepciones
+    resultado = 10 / int(input("Divide entre: "))
+except ZeroDivisionError:
+    # Se ejecuta solo si se intentó dividir entre cero
+    print("❌ ¡No puedes dividir entre cero!")
+except ValueError:
+    # Se ejecuta si el usuario escribió letras en vez de números
+    print("❌ ¡Debes ingresar un número entero válido!")
+else:
+    # Se ejecuta ÚNICAMENTE si el bloque TRY fue 100% exitoso
+    print(f"✅ Operación realizada con éxito. Resultado: {resultado}")
+finally:
+    # Se ejecuta SIEMPRE, haya ocurrido un error o no (Limpieza de memoria/auditoría)
+    print("🧹 Ciclo de ejecución finalizado.")

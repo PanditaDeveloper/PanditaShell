@@ -134,14 +134,19 @@ function prompt {
     return " "
 }
 
-# --- ALIAS ÚTILES ---
-Set-Alias ll Get-ChildItem   # como 'ls -l' en Linux
-function gs { git status }
-function gc { git commit -m $args }
-function gp { git push }
-# Alias para abrir Neovim rápido (puedes usar 'v' o 'nvim')
-Set-Alias v nvim
-Set-Alias python3 python
+# --- ALIAS ÚTILES Y DETECCIÓN DE GIT ---
+Set-Alias ll Get-ChildItem -Force
+Set-Alias v nvim -Force
+Set-Alias python3 python -Force
+
+# PowerShell reserva gs, gc y gp de forma nativa. Usamos funciones intermedias y forzamos el alias:
+function Watch-GitStatus { git status }
+function Do-GitCommit { git commit -m "$args" }
+function Do-GitPush { git push }
+
+Set-Alias gs Watch-GitStatus -Force
+Set-Alias gc Do-GitCommit -Force
+Set-Alias gp Do-GitPush -Force
 
 # --- AUTOCOMPLETADO Y PREDICTIVO ---
 Set-PSReadLineOption -PredictionSource History
