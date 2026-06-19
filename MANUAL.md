@@ -62,6 +62,8 @@ Neovim no usa el mouse de forma nativa; todo se controla mediante **Modos** y co
 | `d` (en Netrw) | Crea una nueva carpeta en el directorio actual. |
 | `R` / `D` (en Netrw) | Renombra / Elimina el archivo o carpeta seleccionado. |
 
+> 🛠️ **Ajustes Avanzados de Netrw:** Configurado con variables globales (`vim.g.netrw_*`) para ocultar banners invasivos (`banner = 0`), formatear el árbol de directorios de forma elegante (`liststyle = 3`), forzar las aperturas verticales a la derecha (`altv = 1`) y asegurar que la barra lateral no colapse al abrir archivos (`browse_split = 4`).
+
 ### 💾 Comandos de Archivo (Modo Comando `:`)
 * `:w` : Guarda los cambios (*Write*).
 * `:q` : Cierra el archivo actual (*Quit*).
@@ -81,7 +83,7 @@ Tu entorno cuenta con el instalador de servidores **Mason**, un motor de autocom
 * **`Tab` / `Shift + Tab`** : Navega hacia abajo / arriba en el menú flotante de sugerencias de código.
 * **`Enter`** : Confirma la sugerencia del menú y auto-rellena el código por ti.
 
-> ⚙️ **Nota de Arquitectura:** El entorno está configurado con la sintaxis nativa moderna `vim.lsp.enable('pyright')`, garantizando velocidad máxima y compatibilidad con versiones de Neovim 0.11 o superiores.
+> ⚙️ **Nota de Arquitectura:** El entorno está configurado de manera nativa con la jerarquía de dependencias blindada de Lazy.nvim. Mason y Mason-Lspconfig actúan como requisitos sincrónicos previos antes de instanciar `vim.lsp.enable('pyright')`, erradicando cualquier carrera de carga o error de inicialización en NVIM v0.12+.
 
 ---
 
@@ -121,14 +123,48 @@ try:
     # Código bajo monitoreo que puede lanzar excepciones
     resultado = 10 / int(input("Divide entre: "))
 except ZeroDivisionError:
-    # Se ejecuta solo si se intentó dividir entre cero
     print("❌ ¡No puedes dividir entre cero!")
 except ValueError:
-    # Se ejecuta si el usuario escribió letras en vez de números
     print("❌ ¡Debes ingresar un número entero válido!")
 else:
     # Se ejecuta ÚNICAMENTE si el bloque TRY fue 100% exitoso
     print(f"✅ Operación realizada con éxito. Resultado: {resultado}")
 finally:
-    # Se ejecuta SIEMPRE, haya ocurrido un error o no (Limpieza de memoria/auditoría)
+    # Se ejecuta SIEMPRE, haya ocurrido un error o no
     print("🧹 Ciclo de ejecución finalizado.")
+```
+
+📦 Modularización y Puntos de Entrada
+Python no implementa NameSpaces rígidos; la arquitectura del software se rige por su estructura de archivos.
+
+Importación selectiva: from modulo import funcion_especifica.
+
+Desempaquetado de Tuplas: Capacidad nativa de retornar múltiples valores en una sola línea de cómputo y capturarlos limpiamente:
+
+```python
+minimo, maximo, promedio = analizar_numeros(lista_datos)
+```
+
+El Guardián del Scope (__name__): Bloque de aislamiento crítico para evitar que el código de prueba e inicialización de un archivo secundario se ejecute por accidente al ser importado por otro script:
+
+```python
+if __name__ == "__main__":
+    # Punto de entrada de ejecución autónoma
+```
+
+🗃️ Estructuras de Datos Avanzadas: Diccionarios ProEn Python, los diccionarios son tablas de Hash de alto rendimiento ($O(1)$) capaces de almacenar strings, enteros e incluso referencias directas a funciones (First-Class Functions).Patrón de Despacho por Diccionario (Dictionary Dispatch): Reemplaza estructuras complejas de if/elif/else o switch asignando una llave a un bloque de datos o a una función directamente ejecutables:
+
+```python
+acciones = {"atacar": atacar, "defender": defender}
+# Ejecución dinámica
+acciones.get(comando)()
+```
+
+Encadenamiento Seguro de Consultas (.get): Patrón senior para interrogar diccionarios anidados (Nested Dictionaries) en una sola línea de código sin riesgo de lanzar un KeyError. Si el primer nodo no se halla, inyecta un diccionario vacío {} para que el segundo eslabón falle de forma controlada regresando un valor nulo:
+
+```pyrhon
+# Si 'sub_sistema' no existe, hereda `{}` y busca el código ahí, retornando None
+mensaje = sistema_errores.get(sub_sistema, {}).get(codigo_numerico, None)
+```
+
+
