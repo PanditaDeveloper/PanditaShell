@@ -10,10 +10,14 @@ vim.opt.smartindent = true        -- Auto-indentación inteligente para código
 vim.opt.mouse = "a"               -- Permite usar el mouse por si acaso (clic, scroll)
 vim.opt.clipboard = "unnamedplus" -- Sincroniza el portapapeles de Neovim con el de Windows
 
--- Atajo maestro para ejecutar Python con F5
-vim.keymap.set('n', '<F5>', ':w<CR>:split | terminal python %<CR>', { silent = true })
+-- 🌟 CONFIGURACIÓN ESTILO IDE PARA EL EXPLORADOR NATIVO (Netrw)
+vim.g.netrw_banner = 0        -- Esconde el cartel gigante de ayuda de arriba
+vim.g.netrw_liststyle = 3     -- Transforma la lista plana en un Árbol Desplegable elegante
+vim.g.netrw_browse_split = 4  -- Fuerza a abrir los archivos en la ventana de edición previa
+vim.g.netrw_altv = 1          -- Fuerza las divisiones verticales hacia la derecha
 
--- Explorador de archivos Netrw (Ctrl + n abre/cierra el panel izquierdo al 25% de pantalla)
+-- Atajos maestros
+vim.keymap.set('n', '<F5>', ':w<CR>:split | terminal python %<CR>', { silent = true })
 vim.keymap.set('n', '<C-n>', ':Lex 25<CR>', { silent = true })
 
 -- ====================================================================
@@ -44,7 +48,7 @@ require("lazy").setup({
     opts = {} 
   },
 
-  -- MOTOR DE AUTOCOMPLETADO (nvim-cmp)
+  -- MOTOR DE AUTOCOMPLETADO Y SNIPPETS (nvim-cmp)
   {
     "hrsh7th/nvim-cmp",
     dependencies = {
@@ -55,6 +59,17 @@ require("lazy").setup({
     config = function()
       local cmp = require("cmp")
       local luasnip = require("luasnip")
+
+      -- 🌟 INYECCIÓN DE SNIPPETS PERSONALIZADOS (ANSI Colors)
+      -- 'all' significa que funcionarán en cualquier tipo de archivo (.py, .md, .cs, etc.)
+      luasnip.add_snippets("all", {
+        luasnip.parser.parse_snippet("fgred", [[\033[31m$1\033[0m]]),
+        luasnip.parser.parse_snippet("fggreen", [[\033[32m$1\033[0m]]),
+        luasnip.parser.parse_snippet("fgyellow", [[\033[33m$1\033[0m]]),
+        luasnip.parser.parse_snippet("bgred", [[\033[41m$1\033[0m]]),
+        luasnip.parser.parse_snippet("bggreen", [[\033[42m$1\033[0m]]),
+        luasnip.parser.parse_snippet("ansireset", [[\033[0m]]),
+      })
 
       cmp.setup({
         snippet = {
@@ -89,7 +104,7 @@ require("lazy").setup({
     end
   },
 
-  -- LSPCONFIG: Encapsulado con Mason como dependencias obligatorias previas
+  -- LSPCONFIG: Integración nativa moderna para Neovim
   {
     "neovim/nvim-lspconfig",
     dependencies = {
@@ -97,15 +112,11 @@ require("lazy").setup({
       "williamboman/mason-lspconfig.nvim",
     },
     config = function()
-      -- 1. Forzamos la carga del Mason base primero
       require("mason").setup()
-      
-      -- 2. Forzamos la carga del puente lspconfig segundo
       require('mason-lspconfig').setup({
         ensure_installed = { "pyright" }
       })
 
-      -- 3. Una vez listos los anteriores, levantamos Pyright de forma nativa moderna
       if vim.lsp.config and vim.lsp.config.pyright then
         vim.lsp.config.pyright.on_attach = function(_, bufnr)
           local opts = { buffer = bufnr, silent = true }
@@ -113,11 +124,8 @@ require("lazy").setup({
           vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
         end
         
-        -- Conectar capacidades del menú flotante de autocompletado
-        local pcall_cmp, cmp_lsp = pcall(require, 'cmp_nvim_lsp')
-        if pcall_cmp then
-          vim.lsp.config.pyright.capabilities = cmp_lsp.default_capabilities()
-        end
+        local capabilities = require('cmp_nvim_lsp').default_capabilities()
+        vim.lsp.config.pyright.capabilities = capabilities
 
         vim.lsp.enable('pyright')
       end
