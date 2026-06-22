@@ -60,17 +60,34 @@ require("lazy").setup({
       local cmp = require("cmp")
       local luasnip = require("luasnip")
 
-      -- 🌟 INYECCIÓN DE SNIPPETS PERSONALIZADOS (ANSI Colors)
-      -- 'all' significa que funcionarán en cualquier tipo de archivo (.py, .md, .cs, etc.)
-      luasnip.add_snippets("all", {
-        luasnip.parser.parse_snippet("fgred", [[\033[31m$1\033[0m]]),
-        luasnip.parser.parse_snippet("fggreen", [[\033[32m$1\033[0m]]),
-        luasnip.parser.parse_snippet("fgyellow", [[\033[33m$1\033[0m]]),
-        luasnip.parser.parse_snippet("bgred", [[\033[41m$1\033[0m]]),
-        luasnip.parser.parse_snippet("bggreen", [[\033[42m$1\033[0m]]),
-        luasnip.parser.parse_snippet("ansireset", [[\033[0m]]),
-      })
+      -- 🌟 TU MEJORA: INYECCIÓN DINÁMICA DE SNIPPETS (ANSI Colors Extendidos)
+      local p = luasnip.parser.parse_snippet
 
+      local colores = {
+        black   = "0", red     = "1", green   = "2", yellow  = "3",
+        blue    = "4", magenta = "5", cian    = "6", white   = "7"
+      }
+
+      local snippets_ansi = {
+        p("ansireset", [[\033[0m$0]]),
+        p("ansibold",  [[\033[1m$1\033[0m$0]]),
+        p("ansiunder", [[\033[4m$1\033[0m$0]]),
+      }
+
+      for nombre, codigo in pairs(colores) do
+        -- Texto Estándar (fg)
+        table.insert(snippets_ansi, p("fg" .. nombre, [[\033[3]] .. codigo .. [[m$1\033[0m$0]]))
+        -- Texto Brillante (fgb)
+        table.insert(snippets_ansi, p("fg" .. nombre .. "b", [[\033[9]] .. codigo .. [[m$1\033[0m$0]]))
+        -- Fondo Estándar (bg)
+        table.insert(snippets_ansi, p("bg" .. nombre, [[\033[4]] .. codigo .. [[m$1\033[0m$0]]))
+        -- Fondo Brillante (bgb)
+        table.insert(snippets_ansi, p("bg" .. nombre .. "b", [[\033[10]] .. codigo .. [[m$1\033[0m$0]]))
+      end
+
+      luasnip.add_snippets("all", snippets_ansi)
+
+      -- Configuración del motor de completado
       cmp.setup({
         snippet = {
           expand = function(args) luasnip.lsp_expand(args.body) end,
