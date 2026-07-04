@@ -21,3 +21,12 @@ class InventarioTienda():
             if prenda.id == id_prenda:
                 return prenda
         return None
+
+    def eliminar_por_id(self, id):
+        prenda = self.buscar_por_id(id)
+        
+        if prenda is not None:
+            self.prendas.remove(prenda)
+            return True
+
+        return False

@@ -21,6 +21,7 @@ class InterfazTienda:
             print("1. Ver todas las prendas en Inventario")
             print("2. Registrar una nueva Prenda")
             print("3. Modificar Stock de una Prenda")
+            print("4. Eliminar una prenda de el inventario")
             print("0. Salir del Sistema")
 
             opcion = input("\nSelecciona una opción: ")
@@ -94,7 +95,27 @@ class InterfazTienda:
                         
                 except ValueError:
                     print("\n❌ \033[31m[ERROR] El ID o el Stock deben ser números enteros.\033[0m")
-                    input("\nPresiona Enter para volver a intentar...")                   
+                    input("\nPresiona Enter para volver a intentar...")
+            elif opcion == "4":
+                
+                Pantalla.limpiar()
+                print(f"\033[35m{'='*40}\033[0m")
+                print("\033[35m🚨 ELIMINACIÓN DE PRODUCTO\033[0m")
+                print(f"\033[35m{'='*40}\033[0m\n")
+                
+                try:
+                    id = int(input("ID: "))
+                    exito = inventario_servicio.eliminar_por_id(id)
+                    if exito:
+                        print("\033[32m✅ Prenda eliminada del almacén correctamente\033[0m")
+                    else:
+                        print("\033[33m⚠️ [AVISO] El ID ingresado no coincide con ningún producto\033[0m")
+                    input("presiona enter para continuar...")
+                except ValueError:
+                    print("\n❌ \033[31m[ERROR] El ID debe ser un número entero.\033[0m")
+                    input("\npresiona Enter para volver a intentar...")
+
+
             elif opcion == "0":
                 Pantalla.limpiar()
                 print(f"\033[35m{'='*40}\033[0m")
