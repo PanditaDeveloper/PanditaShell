@@ -96,7 +96,7 @@ function Draw-Centered-Table {
 # --- USO DE LA FUNCIÓN PARA DIBUJAR LA TABLA ---
 # Cambié $env:COMPUTERNAME por una validación más limpia y usé [ordered] para fijar el orden.
 $systemInfo = [ordered]@{
-    "Usuario" = "Cristobal (PanditaTriste)"
+    "Usuario" = "Cristobal (Pandita Triste)"
     "PC" = "$env:COMPUTERNAME"
     "Versión de PowerShell" = "v$($PSVersionTable.PSVersion.Major).$($PSVersionTable.PSVersion.Minor)"
     "Editor Principal" = "Neovim"

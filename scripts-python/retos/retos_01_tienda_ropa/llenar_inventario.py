@@ -17,12 +17,12 @@ nuevas_prendas = [
     ("Pantalon para tomar la siesta", "S", 50.0, 5, 2)
 ]
 
-#cursor.executemany(
-#    "INSERT INTO prendas (nombre, talla, precio, stock, categoria_id) VALUES (?, ?, ?, ?, ?);",
-#    nuevas_prendas
-#)
+cursor.executemany(
+    "INSERT INTO prendas (nombre, talla, precio, stock, categoria_id) VALUES (?, ?, ?, ?, ?);",
+    nuevas_prendas
+)
 
-#conexion.commit()
+conexion.commit()
 
 print("\n📤 Consultando base de datos...")
 cursor.execute("SELECT * FROM prendas;")
